@@ -1,5 +1,6 @@
 package in.ali.citibank.resource;
 
+import java.security.Principal;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -74,6 +75,12 @@ public class UserController {
 		String token = jwtUtils.generateToken(userRequest.getUserName());
 		return ResponseEntity.ok(new UserResponse(token," TOKEN IS GENERATED..!"));
 		
+	}
+	
+	
+	@PostMapping("/welcome")
+	public ResponseEntity<String> userWelcome(Principal principle){
+		return ResponseEntity.ok("welcome to security in page "+principle);
 	}
 
 }

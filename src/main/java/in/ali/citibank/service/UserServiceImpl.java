@@ -32,7 +32,6 @@ public class UserServiceImpl implements IUserService, UserDetailsService {
 	public User saveUser(User user) {
 		// password encoded before storing to db
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
-		user.setUserName(passwordEncoder.encode(user.getUserName()));
 		return userRepository.save(user);
 	}
 

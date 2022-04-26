@@ -32,5 +32,22 @@ public class JwtUtils {
     public Claims getClaims(String token) {
     	return Jwts.parser().setSigningKey(secret.getBytes()).parseClaimsJws(token).getBody();
     }
-
+    
+    //3.validate the exp date
+    public boolean isTokenExpired(String token) {
+         Date expDate = getExpDate(token);
+         return expDate.before(new Date(System.currentTimeMillis()));
+    }
+    
+    //4.get exp date of token
+    public Date getExpDate(String token) {
+    	return getClaims(token).getExpiration();
+    }
+    
+    //5.validate token
+    public boolean validateToken(String token,String username) {
+    	String tokenUserName = getClaims(token).getSubject();
+    	return username.equals(tokenUserName) && !isTokenExpired(token);
+    }
+      
 }

@@ -6,6 +6,7 @@ import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -17,23 +18,22 @@ import lombok.NoArgsConstructor;
 
 @Data
 @Entity
-@Table(name="user")
+@Table(name = "user")
 @AllArgsConstructor
 @NoArgsConstructor
 public class User {
-	
+
 	@Id
 	@GeneratedValue
 	private Integer userId;
-	private String  name;
+	private String name;
 	private String userName;
 	private String password;
 	private String phoneNumber;
-	
-	
-	@ElementCollection
-	@CollectionTable(name="rolesTable",joinColumns = @JoinColumn(name="id"))
-	@Column(name="roles")
+
+	@ElementCollection(fetch = FetchType.EAGER)
+	@CollectionTable(name = "rolesTable", joinColumns = @JoinColumn(name = "id"))
+	@Column(name = "roles")
 	private Set<String> roles;
 
 }

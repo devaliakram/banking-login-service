@@ -11,8 +11,10 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import in.ali.citibank.exception.InvalidUserEntryPoint;
+import in.ali.citibank.filter.SecurityFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -21,6 +23,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	private UserDetailsService userDetailsService;
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
 	private InvalidUserEntryPoint invalidUserEntryPoint;
+	
+	@Autowired
+	private SecurityFilter filter;
 	
 	@Autowired
 	public SecurityConfig(UserDetailsService userDetailsService, BCryptPasswordEncoder bCryptPasswordEncoder,
@@ -58,7 +63,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		.exceptionHandling().authenticationEntryPoint(invalidUserEntryPoint)
 		.and()
 		.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+		
 		//TODO:verify user for 2nd request
+         .and()
+         //register the filter for 2nd request onwards
+         .addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class);
 		
 		;
 	}
